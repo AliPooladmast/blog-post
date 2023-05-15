@@ -23,6 +23,20 @@ const PostWidget = ({ slug, categories }) => {
       <h3 className="text-xl mb-8 font-semibold border-b pb-4">
         {slug ? "Related Posts" : "Recent Posts"}
       </h3>
+
+      {relatedPost.map((post) => (
+        <div className="flex items-center w-full mb-4">
+          <div className="w-16 flex-none">
+            <img
+              src={post.featuredImage.url}
+              alt={post.title}
+              width="60px"
+              height="60px"
+              className="align-middle rounded-full"
+            />
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
