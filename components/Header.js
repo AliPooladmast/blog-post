@@ -1,11 +1,10 @@
 import Link from "next/link";
-
-const categories = [
-  { name: "Philosophy", slug: "philosophy" },
-  { name: "Technology", slug: "techs" },
-];
+import { useContext } from "react";
+import { Context } from "./Layout";
 
 const Header = () => {
+  const categories = useContext(Context);
+
   return (
     <div className="container mx-auto px-10 mb-8">
       <div className="border-b w-full inline-block border-blue-400 py-8">
