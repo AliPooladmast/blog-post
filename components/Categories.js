@@ -1,18 +1,9 @@
 import Link from "next/link";
-import { getCategories } from "../services";
-import React, { useEffect, useState } from "react";
+import { useContext } from "react";
+import { Context } from "./Layout";
 
 const Categories = () => {
-  const [categories, setCategories] = useState([]);
-
-  const categoriesRequest = async () => {
-    const result = await getCategories();
-    setCategories(result);
-  };
-
-  useEffect(() => {
-    categoriesRequest();
-  }, []);
+  const categories = useContext(Context);
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-8 mb-8">
