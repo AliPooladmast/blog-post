@@ -9,7 +9,18 @@ const CommentsForm = () => {
   const email = useRef();
   const storeData = useRef();
 
-  const handleCommentSubmission = () => {};
+  const handleCommentSubmission = () => {
+    setError(false);
+
+    const comment = comment.current.value;
+    const name = name.current.value;
+    const email = email.current.value;
+
+    if (!comment || !name || !email) {
+      setError(false);
+      return;
+    }
+  };
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-8 pb-12 mb-8">
@@ -17,6 +28,7 @@ const CommentsForm = () => {
 
       <div className="grid grid-cols-1 gap-4 mb-4">
         <textarea
+          ref={comment}
           name="comment"
           placeholder="Comment"
           className="bg-gray-100 p-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 text-gray-700"
@@ -25,12 +37,14 @@ const CommentsForm = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         <input
+          ref={name}
           type="text"
           name="name"
           placeholder="Name"
           className="bg-gray-100 py-2 px-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 text-gray-700"
         />
         <input
+          ref={email}
           type="text"
           name="email"
           placeholder="Email"
