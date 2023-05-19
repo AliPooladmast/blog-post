@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 const CommentsForm = () => {
   const [error, setError] = useState(false);
   const [localStorage, setLocalStorage] = useState(null);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(true);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const comment = useRef();
   const name = useRef();
   const email = useRef();
@@ -19,6 +19,16 @@ const CommentsForm = () => {
     if (!comment || !name || !email) {
       setError(false);
       return;
+    }
+
+    const commentObject = { name, email, comment, slug };
+
+    if (storeData) {
+      localStorage.setItem("name", name);
+      localStorage.setItem("email", email);
+    } else {
+      localStorage.removeItem("name", name);
+      localStorage.removeItem("email", email);
     }
   };
 
@@ -50,6 +60,23 @@ const CommentsForm = () => {
           placeholder="Email"
           className="bg-gray-100 py-2 px-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 text-gray-700"
         />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 mb-4">
+        <div>
+          <input
+            type="checkbox"
+            ref={storeData}
+            id="storeData"
+            name="storeData"
+          />
+          <label
+            htmlFor="storeData"
+            className="text-gray-500 cursor-pointer ml-2"
+          >
+            Save my e-mail and name for the next time I comment
+          </label>
+        </div>
       </div>
 
       {error && <p className="text-xs text-red-500">All fields are required</p>}
