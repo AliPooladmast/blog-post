@@ -3,11 +3,13 @@ import React, { useRef, useState } from "react";
 const CommentsForm = () => {
   const [error, setError] = useState(false);
   const [localStorage, setLocalStorage] = useState(null);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(true);
   const comment = useRef();
   const name = useRef();
   const email = useRef();
   const storeData = useRef();
+
+  const handleCommentSubmission = () => {};
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-8 pb-12 mb-8">
@@ -37,6 +39,21 @@ const CommentsForm = () => {
       </div>
 
       {error && <p className="text-xs text-red-500">All fields are required</p>}
+
+      <div className="mt-8">
+        <button
+          onClick={handleCommentSubmission}
+          className="bg-pink-600 text-lg rounded-full text-white px-8 py-3 inline-block cursor-pointer transition duration-500 ease hover:bg-indigo-900"
+        >
+          Post Comment
+        </button>
+      </div>
+
+      {showSuccessMessage && (
+        <span className="text-xl float-right font-semibold mt-3 text-green-500">
+          Comment submitted for the review
+        </span>
+      )}
     </div>
   );
 };
