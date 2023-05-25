@@ -1,10 +1,12 @@
 import Head from "next/head";
 import { PostCard, PostWidget, Categories } from "../components";
 import { getPosts } from "../services";
+import { FeaturedPosts } from "@/sections";
 
 export default function Home({ posts }) {
   return (
     <div className="container mx-auto px-10 mb-8">
+      <FeaturedPosts />
       <Head>
         <title>Blog Post</title>
         <link rel="icon" href="/favicon.ico" />
