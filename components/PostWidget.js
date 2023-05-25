@@ -12,7 +12,7 @@ const PostWidget = ({ slug, categories }) => {
 
   const getWidgetPosts = async () => {
     if (slug) {
-      const result = await getSimilarPosts(slug, categories);
+      const result = await getSimilarPosts({ slug, categories });
       setRelatedPost(result);
     } else {
       const result = await getRecentPosts();
