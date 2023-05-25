@@ -1,20 +1,27 @@
-import React, { useRef, useState } from "react";
+import { submitComment } from "@/services";
+import React, { useEffect, useRef, useState } from "react";
 
-const CommentsForm = () => {
+const CommentsForm = ({ slug }) => {
   const [error, setError] = useState(false);
   const [localStorage, setLocalStorage] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const comment = useRef();
-  const name = useRef();
-  const email = useRef();
-  const storeData = useRef();
+  const commentEl = useRef();
+  const nameEl = useRef();
+  const emailEl = useRef();
+  const storeDataEl = useRef();
 
-  const handleCommentSubmission = () => {
+  useEffect(() => {
+    nameEl.current.value = window.localStorage.getItem("name");
+    emailEl.current.value = window.localStorage.getItem("email");
+  }, []);
+
+  const handleCommentSubmission = async () => {
     setError(false);
 
-    const comment = comment.current.value;
-    const name = name.current.value;
-    const email = email.current.value;
+    const comment = commentEl.current.value;
+    const name = nameEl.current.value;
+    const email = emailEl.current.value;
+    const storeData = storeDataEl.current.checked;
 
     if (!comment || !name || !email) {
       setError(false);
@@ -24,11 +31,23 @@ const CommentsForm = () => {
     const commentObject = { name, email, comment, slug };
 
     if (storeData) {
-      localStorage.setItem("name", name);
-      localStorage.setItem("email", email);
+      window.localStorage.setItem("name", name);
+      window.localStorage.setItem("email", email);
     } else {
-      localStorage.removeItem("name", name);
-      localStorage.removeItem("email", email);
+      window.localStorage.removeItem("name", name);
+      window.localStorage.removeItem("email", email);
+    }
+
+    try {
+      const response = await submitComment(commentObject);
+      if (response) {
+        setShowSuccessMessage(true);
+        setTimeout(() => {
+          setShowSuccessMessage(false);
+        }, 3000);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -38,7 +57,7 @@ const CommentsForm = () => {
 
       <div className="grid grid-cols-1 gap-4 mb-4">
         <textarea
-          ref={comment}
+          ref={commentEl}
           name="comment"
           placeholder="Comment"
           className="bg-gray-100 p-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 text-gray-700"
@@ -47,14 +66,14 @@ const CommentsForm = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         <input
-          ref={name}
+          ref={nameEl}
           type="text"
           name="name"
           placeholder="Name"
           className="bg-gray-100 py-2 px-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 text-gray-700"
         />
         <input
-          ref={email}
+          ref={emailEl}
           type="text"
           name="email"
           placeholder="Email"
@@ -66,9 +85,10 @@ const CommentsForm = () => {
         <div>
           <input
             type="checkbox"
-            ref={storeData}
+            ref={storeDataEl}
             id="storeData"
             name="storeData"
+            defaultValue={true}
           />
           <label
             htmlFor="storeData"
